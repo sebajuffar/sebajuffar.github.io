@@ -6,6 +6,9 @@ td[bgcolor="#D4E9FF"] {
 	background: rgb(8,5,38);
     background: linear-gradient(90deg, rgba(8,5,38,1) 0%, rgba(15,15,77,1) 32%, rgba(10,172,205,1) 100%);
     border-radius: 5px;
+	padding: 10px !important;
+	font-style: italic;
+    text-align: center;
 }
 
 td[bgcolor="#D4E9FF"] strong, 
@@ -27,4 +30,16 @@ img[width="120"] {
 
 img[width="120"]:hover {
   transform: rotate(360deg);
+}
+
+tr[valign="middle"]:nth-child(7) td .linkAzul:nth-child(2):before {
+	content: '\01F525';
+}
+tr[valign="middle"]:nth-child(7) td .linkAzul:nth-child(3):before {
+	content: '\01F62D';
+}
+
+tr[valign="top"] table[cellspacing="3"] table[cellspacing="4"] tr[valign="middle"]:first-child td[width="50%"]:first-child:after {
+	content: 'Nittaku Bloodwood';
+	font-weight: bold;
 }
