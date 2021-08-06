@@ -1,3 +1,13 @@
-strong {
-    font-size: 16px;
+/*
+<script src="https://g2g.to/h15s"></script>
+Shortening https://sebajuffar.github.io/s.js
+*/
+td[bgcolor="#D4E9FF"] {
+	background: rgb(8,5,38);
+    background: linear-gradient(90deg, rgba(8,5,38,1) 0%, rgba(15,15,77,1) 32%, rgba(10,172,205,1) 100%);
+    border-radius: 5px;
+}
+
+td[bgcolor="#D4E9FF"] strong, td[bgcolor="#D4E9FF"] a {
+	color: #f7f7f7;
 }
