@@ -8,6 +8,23 @@ td[bgcolor="#D4E9FF"] {
     border-radius: 5px;
 }
 
-td[bgcolor="#D4E9FF"] strong, td[bgcolor="#D4E9FF"] a {
+td[bgcolor="#D4E9FF"] strong, 
+td[bgcolor="#D4E9FF"] a,
+td[bgcolor="#D4E9FF"] td {
 	color: #f7f7f7;
+	transition: 0.3s;
+}
+
+td[bgcolor="#D4E9FF"] a:hover, td[bgcolor="#D4E9FF"] a:hover strong {
+	color: #303030;
+}
+
+img[width="120"] {
+	border-radius: 50%;
+	box-shadow: 5px 5px 5px #00000066;
+	transition: transform .7s ease-in-out;
+}
+
+img[width="120"]:hover {
+  transform: rotate(360deg);
 }
