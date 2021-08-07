@@ -2,6 +2,16 @@
 <script src="https://g2g.to/h15s"></script>
 Shortening https://sebajuffar.github.io/s.js
 */
+
+body {
+	background-image: url(https://estacionpingpong.com/wp-content/uploads/2019/07/icono-1-150x150.png);
+	background-repeat: repeat;
+}
+
+table {
+	font-size: 12px;
+}
+
 td[bgcolor="#D4E9FF"] {
 	background: rgb(8,5,38);
     background: linear-gradient(90deg, rgba(8,5,38,1) 0%, rgba(15,15,77,1) 32%, rgba(10,172,205,1) 100%);
@@ -9,12 +19,19 @@ td[bgcolor="#D4E9FF"] {
 	padding: 10px !important;
 	font-style: italic;
     text-align: center;
+    letter-spacing: 5px;
+    word-spacing: 10px;
+	font-size: 16px;
 }
-
+td[bgcolor="#D4E9FF"] a, td[bgcolor="#D4E9FF"] td[nowrap] {
+	letter-spacing: 0;
+	word-spacing: 0;
+}
 td[bgcolor="#D4E9FF"] strong, 
 td[bgcolor="#D4E9FF"] a,
 td[bgcolor="#D4E9FF"] td {
 	color: #f7f7f7;
+	text-shadow: 2px 2px 2px #00000066;
 	transition: 0.3s;
 }
 
@@ -26,15 +43,30 @@ img[width="120"] {
 	border-radius: 50%;
 	box-shadow: 5px 5px 5px #00000066;
 	transition: transform .7s ease-in-out;
+	width: 170px;
+    height: 170px;
+	display: block;
+    box-sizing: border-box;
+    background-image: url(http://drive.google.com/uc?export=view&id=11vIUYgYMYGar5bpYeVefT8RBjsp66-cU);
+	background-repeat: no-repeat;
+    padding-left: 170px;
+	background-size: cover;
+    background-position: center;
 }
 
 img[width="120"]:hover {
-  transform: rotate(360deg);
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
 }
 
 tr[valign="middle"]:nth-child(7) td .linkAzul:nth-child(2):before {
 	content: '\01F525';
 }
+
 tr[valign="middle"]:nth-child(7) td .linkAzul:nth-child(3):before {
 	content: '\01F62D';
 }
@@ -42,4 +74,64 @@ tr[valign="middle"]:nth-child(7) td .linkAzul:nth-child(3):before {
 tr[valign="top"] table[cellspacing="3"] table[cellspacing="4"] tr[valign="middle"]:first-child td[width="50%"]:first-child:after {
 	content: 'Nittaku Bloodwood';
 	font-weight: bold;
+}
+
+tr[valign="top"] table[cellspacing="3"] table[cellspacing="4"] tr[valign="middle"]:nth-child(3) td[width="50%"]:before {
+	content: '';
+	display: block;
+	background-repeat: no-repeat;
+	width: 120px;
+	height: 100px;
+	background-size: cover;
+    background-position: center;
+	margin-left: 50px;
+    margin-bottom: 30px;
+}
+
+tr[valign="top"] table[cellspacing="3"] table[cellspacing="4"] tr[valign="middle"]:nth-child(3) td[width="50%"]:first-child:before {
+	background-image: url(https://revspin.net/images/blade/nittaku-bloodwood.jpg);
+}
+
+tr[valign="top"] table[cellspacing="3"] table[cellspacing="4"] tr[valign="middle"]:nth-child(3) td[width="50%"]:nth-child(2):before {
+	width: 140px;
+	background-image: url(https://tabletennis11.com/media/catalog/product/a/n/andro_rasanter_r42_10045.jpg);
+}
+
+tr[valign="top"] table[cellspacing="3"] table[cellspacing="4"] tr[valign="middle"] td[width="50%"] {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	font-size: 14px;
+}
+
+tr[valign="top"] table[cellspacing="3"] tr:nth-child(7) table[cellspacing="4"] tr[valign="middle"] td {
+	padding-top: 3px;
+	padding-bottom: 3px;
+	font-size: 14px;
+}
+
+tr[valign="top"] table[cellspacing="3"] tr:nth-child(9) table tr:first-child td:first-child {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	font-size: 16px;
+}
+
+tr[valign="top"] table[cellspacing="3"] tr:nth-child(10) table tr td {
+	font-size: 14px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+tr[valign="top"] table[cellspacing="3"] tr[valign="middle"] td[height="1"] {
+	display: none;
+}
+
+table[cellspacing="5"] td[width="40"] img[width="40"] {
+	border-radius: 50%;
+	box-shadow: 5px 5px 5px #00000066;
+	margin-right: 10px;
+}
+
+table[cellspacing="5"] td[width="40"] img[width="40"],
+table[cellspacing="5"] td:nth-child(2) {
+	margin-bottom: 5px;	
 }
