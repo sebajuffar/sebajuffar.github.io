@@ -47,14 +47,14 @@ docReady(function() {
 					<div class="info-box">
 						<h6 class="info-title">Club</h6>
 						<a class="club" href="clubes_ampliar.asp?codigo=198">
-							<img src="https://estacionpingpong.com/wp-content/uploads/2019/07/icono-1-150x150.png">
+							<img src="http://drive.google.com/uc?export=view&id=1w9R7ssD26fDG76d17bmR-yK79N7gxjxB">
 							<span>Estación Ping Pong</span>
 						</a>
 					</div>
 					<div class="info-box">
 						<h6 class="info-title">Asociación</h6>
 						<a href="asociaciones_ampliar.asp?codigo=1" class="asociacion">
-							<img src="http://www.fetemba.org.ar/news/1038.jpg">
+							<img src="http://drive.google.com/uc?export=view&id=1z1mWlOBKSa4kQjwFyWTV6x4XZQHyk9WA">
 							<span>FeTeMBA</span>
 						</a>
 					</div>
