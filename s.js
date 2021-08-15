@@ -23,7 +23,7 @@ docReady(function() {
 		<div class="profile-container">
 			<div class="avatar-flip">
 				<img src="http://drive.google.com/uc?export=view&id=1mzTXkLtbhy_ERvvr-tfWMrb7qfoQXyWA" height="170" width="170">
-				<img src="https://estacionpingpong.com/wp-content/uploads/2019/07/icono-1-150x150.png" height="170" width="170">
+				<img src="http://drive.google.com/uc?export=view&id=1w9R7ssD26fDG76d17bmR-yK79N7gxjxB" height="170" width="170">
 			</div>
 			<div class="information-container">
 				<h3 class="profile-code">Código #15168</h3>
