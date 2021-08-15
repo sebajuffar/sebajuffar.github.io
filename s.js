@@ -16,6 +16,7 @@ docReady(function() {
 	var rating = getElementByAttribute("style", "font-size:23px; color:#FF0000;").innerHTML;
 	var variacion = getElementByAttribute("href", "partidos_xjugador.asp?codigo=15168&ver=UltimoRanking").innerHTML;
 	var ranking = getElementByText('Posición en el ranking:').parentElement.children[1].innerText;
+	var categoryImage = getElementByAttribute('width',29).innerHTML;
 	var profileParent = profile.parentNode;
 	
 	profile.remove();
@@ -28,7 +29,7 @@ docReady(function() {
 			<div class="information-container">
 				<h3 class="profile-code">Código #15168</h3>
 				<h2>Sebastián Juffar</h2>
-				<img src="imagenes/icono_puesto_5ta.gif" class="rating-image">
+				<div id="category-image"></div>
 				<div class="info-box first">
 					<h6 class="info-title">Rating</h6>
 					<span id="profile-rating"></span>
@@ -62,9 +63,11 @@ docReady(function() {
 			</div>
 		</div>
 	</td>`;
+	
 	document.getElementById('profile-rating').innerHTML += rating;
 	document.getElementById('profile-variacion-rating').innerHTML += variacion;
 	document.getElementById('profile-posicion-ranking').innerHTML += ranking;
+	document.getElementById('category-image').innerHTML += categoryImage;
 });
 
 function getElementByText(searchText) {
