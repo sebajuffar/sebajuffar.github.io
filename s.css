@@ -249,6 +249,12 @@ table[cellspacing="5"] td:nth-child(2) {
 	color: #ef0d0d;
 }
 
+.profile-code {
+	position: absolute;
+    top: -145px;
+    right: -10px;
+}
+
 .ranking-box {
 	margin-top: 30px;
 }
