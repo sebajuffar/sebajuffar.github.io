@@ -14,7 +14,7 @@ if (!document.getElementById(cssId))
 docReady(function() {
     var profile = getElementByAttribute("style", "font-size:18px; font-weight:bold ");
 	var rating = getElementByAttribute("style", "font-size:23px; color:#FF0000;").innerHTML;
-	var variacion = getElementByAttribute("href", "partidos_xjugador.asp?codigo=15168&ver=UltimoRanking").innerHTML;
+	var variacion = getElementByAttribute("href", "partidos_xjugador.asp?codigo=15168&ver=UltimoRanking") ? getElementByAttribute("href", "partidos_xjugador.asp?codigo=15168&ver=UltimoRanking").innerHTML : '-';
 	var ranking = getElementByText('Posición en el ranking:').parentElement.children[1].innerText;
 	var categoryImage = getElementByAttribute('width',29).innerHTML;
 	var profileParent = profile.parentNode;
