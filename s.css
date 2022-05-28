@@ -140,7 +140,7 @@ table[cellspacing="5"] td:nth-child(2) {
 @import url(https://fonts.googleapis.com/css?family=Roboto:900,300);
 
 .profile-container {
-	font-family: roboto;
+	//font-family: roboto;
     width: 90%;
     margin: 75px auto 10px;
     background-color: #fff;
