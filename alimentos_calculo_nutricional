@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Nutricional Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .meal-section { transition: all 0.3s ease; }
+        .img-thumb { width: 45px; height: 45px; object-fit: cover; border-radius: 8px; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen pb-20">
+
+<div class="max-w-4xl mx-auto px-4 py-8">
+    <header class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-800">🥗 Planificador Diario</h1>
+            <p class="text-gray-500 text-sm">Tus datos se guardan automáticamente</p>
+        </div>
+        <div id="status" class="text-sm text-blue-600 font-medium italic">Cargando base de datos...</div>
+    </header>
+
+    <div id="app-container" class="space-y-6 opacity-50 pointer-events-none">
+        <div id="secciones-comida" class="space-y-6"></div>
+
+        <div class="mt-10 p-6 bg-white rounded-xl shadow-lg border-2 border-green-500">
+            <button onclick="calcularTotales()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-lg text-xl transition-all shadow-lg active:scale-95">
+                📊 Calcular Totales
+            </button>
+
+            <div id="resultado-final" class="hidden mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-blue-50 p-4 rounded-lg text-center border border-blue-100">
+                    <p class="text-gray-600 text-xs uppercase font-bold">Calorías</p>
+                    <p id="total-kcal" class="text-2xl font-black text-blue-600">0</p>
+                </div>
+                <div class="bg-red-50 p-4 rounded-lg text-center border border-red-100">
+                    <p class="text-gray-600 text-xs uppercase font-bold">Proteínas</p>
+                    <p id="total-prot" class="text-2xl font-black text-red-600">0g</p>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-lg text-center border border-yellow-100">
+                    <p class="text-gray-600 text-xs uppercase font-bold">Carbos</p>
+                    <p id="total-carb" class="text-2xl font-black text-yellow-600">0g</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg text-center border border-green-100">
+                    <p class="text-gray-600 text-xs uppercase font-bold">Grasas</p>
+                    <p id="total-gras" class="text-2xl font-black text-green-600">0g</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<template id="fila-alimento">
+    <div class="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 shadow-sm fila-item">
+        <img src="" class="img-thumb bg-gray-200" alt="foto">
+        <div class="flex-1">
+            <p class="font-bold text-gray-700 text-sm nombre-txt leading-tight"></p>
+            <p class="text-xs text-gray-400 info-base"></p>
+        </div>
+        <div class="flex items-center gap-2">
+            <input type="number" class="w-16 p-1 border rounded text-center text-sm font-bold input-gramos focus:border-blue-500 outline-none">
+            <span class="text-xs text-gray-500">g</span>
+        </div>
+        <button class="text-gray-300 hover:text-red-500 transition-colors font-bold px-2 btn-eliminar">✕</button>
+    </div>
+</template>
+
+<script>
+    const APP_URL = "https://script.google.com/macros/s/AKfycbxvHlB1QEdBjU7UbFfUh-rgLdjOjpDkPsthLxtcoZsWOsjzqmz2sNy4-gHNYuFPn_TIZA/exec";
+    let baseDeDatos = [];
+    const nombresSecciones = ["Desayuno", "Colación", "Almuerzo", "Merienda", "Cena"];
+
+    window.onload = async () => {
+        try {
+            const res = await fetch(APP_URL);
+            baseDeDatos = await res.json();
+            document.getElementById('status').innerText = "✅ Conectado";
+            document.getElementById('app-container').classList.remove('opacity-50', 'pointer-events-none');
+
+            inicializarInterfaz();
+            cargarEstadoDeMemoria(); // Restaurar lo que estaba guardado
+        } catch (e) {
+            Swal.fire("Error", "No se pudo cargar la base de datos", "error");
+        }
+    };
+
+    function inicializarInterfaz() {
+        const contenedor = document.getElementById('secciones-comida');
+        nombresSecciones.forEach(nombre => {
+            const section = document.createElement('div');
+            section.className = "meal-section bg-white p-5 rounded-xl shadow-sm border border-gray-200";
+            section.innerHTML = `
+                    <h2 class="text-lg font-bold text-gray-800 mb-3 flex items-center">
+                        <span class="mr-2">🍽️</span> ${nombre}
+                    </h2>
+                    <div class="relative mb-3">
+                        <input type="text" placeholder="Agregar alimento..."
+                            class="w-full p-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none transition-all"
+                            oninput="buscarAlimento(this, '${nombre}')">
+                        <div class="lista-busqueda hidden absolute z-10 w-full bg-white border rounded-b-lg shadow-2xl max-h-60 overflow-y-auto"></div>
+                    </div>
+                    <div id="lista-${nombre}" class="space-y-2"></div>
+                `;
+            contenedor.appendChild(section);
+        });
+    }
+
+    function buscarAlimento(input, seccion) {
+        const query = input.value.toLowerCase();
+        const sugerencias = input.nextElementSibling;
+        if (query.length < 1) { sugerencias.classList.add('hidden'); return; }
+
+        const filtrados = baseDeDatos.filter(item => item.Alimento.toLowerCase().includes(query));
+        sugerencias.innerHTML = "";
+
+        filtrados.forEach(item => {
+            const div = document.createElement('div');
+            div.className = "p-3 hover:bg-blue-50 cursor-pointer border-b flex items-center gap-3";
+            div.innerHTML = `
+                    <img src="${item.Imagen || 'https://via.placeholder.com/50'}" class="w-8 h-8 rounded-full object-cover">
+                    <div>
+                        <p class="text-sm font-bold">${item.Alimento}</p>
+                        <p class="text-xs text-gray-500">${item.Calorías} kcal cada ${item["Porción (gramos)"]}g</p>
+                    </div>
+                `;
+            div.onclick = () => {
+                agregarAlimento(item, seccion, 100);
+                input.value = "";
+                sugerencias.classList.add('hidden');
+            };
+            sugerencias.appendChild(div);
+        });
+        sugerencias.classList.remove('hidden');
+    }
+
+    function agregarAlimento(item, seccion, gramos) {
+        const lista = document.getElementById(`lista-${seccion}`);
+        const temp = document.getElementById('fila-alimento');
+        const clon = temp.content.cloneNode(true);
+        const container = clon.querySelector('.fila-item');
+
+        clon.querySelector('.nombre-txt').innerText = item.Alimento;
+        clon.querySelector('.img-thumb').src = item.Imagen || 'https://via.placeholder.com/100';
+        clon.querySelector('.info-base').innerText = `${item.Calorías} kcal / ${item["Porción (gramos)"]}g`;
+
+        const inputGramos = clon.querySelector('.input-gramos');
+        inputGramos.value = gramos;
+
+        // Eventos para guardar cambios automáticamente
+        inputGramos.oninput = guardarEstadoEnMemoria;
+        clon.querySelector('.btn-eliminar').onclick = (e) => {
+            e.target.closest('.fila-item').remove();
+            guardarEstadoEnMemoria();
+        };
+
+        container.dataset.nutrientes = JSON.stringify(item);
+        container.dataset.seccion = seccion; // Para saber a dónde pertenece al guardar
+
+        lista.appendChild(clon);
+        guardarEstadoEnMemoria();
+    }
+
+    // --- PERSISTENCIA (LOCAL STORAGE) ---
+
+    function guardarEstadoEnMemoria() {
+        const todasLasFilas = document.querySelectorAll('.fila-item');
+        const datosAGuardar = [];
+
+        todasLasFilas.forEach(fila => {
+            const info = JSON.parse(fila.dataset.nutrientes);
+            const gramos = fila.querySelector('.input-gramos').value;
+            const seccion = fila.dataset.seccion;
+
+            datosAGuardar.push({
+                nombreAlimento: info.Alimento,
+                gramos: gramos,
+                seccion: seccion
+            });
+        });
+
+        localStorage.setItem('mi_dieta_diaria', JSON.stringify(datosAGuardar));
+    }
+
+    function cargarEstadoDeMemoria() {
+        const guardado = localStorage.getItem('mi_dieta_diaria');
+        if (!guardado) return;
+
+        const datos = JSON.parse(guardado);
+        datos.forEach(dato => {
+            // Buscamos el objeto completo en la base de datos por nombre
+            const itemOriginal = baseDeDatos.find(i => i.Alimento === dato.nombreAlimento);
+            if (itemOriginal) {
+                agregarAlimento(itemOriginal, dato.seccion, dato.gramos);
+            }
+        });
+
+        // Si había datos, calcular automáticamente al cargar
+        if(datos.length > 0) calcularTotales();
+    }
+
+    function calcularTotales() {
+        let totales = { kcal: 0, prot: 0, carb: 0, gras: 0 };
+        const todasLasFilas = document.querySelectorAll('.fila-item');
+
+        todasLasFilas.forEach(fila => {
+            const info = JSON.parse(fila.dataset.nutrientes);
+            const gramos = parseFloat(fila.querySelector('.input-gramos').value) || 0;
+            const porcionBase = parseFloat(info["Porción (gramos)"]) || 100;
+            const factor = gramos / porcionBase;
+
+            totales.kcal += (info.Calorías * factor);
+            totales.prot += (info.Proteínas * factor);
+            totales.carb += (info.Carbohidratos * factor);
+            totales.gras += (info["Grasas Totales"] * factor);
+        });
+
+        document.getElementById('resultado-final').classList.remove('hidden');
+        document.getElementById('total-kcal').innerText = Math.round(totales.kcal);
+        document.getElementById('total-prot').innerText = totales.prot.toFixed(1) + "g";
+        document.getElementById('total-carb').innerText = totales.carb.toFixed(1) + "g";
+        document.getElementById('total-gras').innerText = totales.gras.toFixed(1) + "g";
+
+        guardarEstadoEnMemoria(); // Guardar al calcular también
+    }
+</script>
+</body>
+</html>
