@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Alimentos - Nutrición</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f9; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+        .card { background: white; border-radius: 8px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .card img { width: 100%; hieght: 150px; object-fit: cover; border-radius: 4px; }
+        .card h3 { margin: 10px 0; color: #333; }
+        .stats { font-size: 0.9em; color: #666; }
+        .badge { background: #e1ffdc; color: #2e7d32; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<h1>🍎 Mis Alimentos</h1>
+<div id="loader">Cargando alimentos...</div>
+<div class="grid" id="contenedor-alimentos"></div>
+
+<script>
+    const APP_URL = "https://script.google.com/macros/s/AKfycbxvHlB1QEdBjU7UbFfUh-rgLdjOjpDkPsthLxtcoZsWOsjzqmz2sNy4-gHNYuFPn_TIZA/exec";
+
+    async function obtenerAlimentos() {
+        try {
+            const respuesta = await fetch(APP_URL);
+            const datos = await respuesta.json();
+
+            const contenedor = document.getElementById('contenedor-alimentos');
+            const loader = document.getElementById('loader');
+            loader.style.display = 'none';
+
+            datos.forEach(alimento => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                        <img src="${alimento.Imagen || 'https://via.placeholder.com/150'}" alt="${alimento.Alimento}">
+                        <h3>${alimento.Alimento}</h3>
+                        <p class="stats">Porción: <b>${alimento["Porción (gramos)"]}g</b></p>
+                        <p><span class="badge">${alimento.Calorías} kcal</span></p>
+                        <hr>
+                        <div class="stats">
+                            Prot: ${alimento.Proteínas}g | Carbs: ${alimento.Carbohidratos}g | Grasas: ${alimento["Grasas Totales"]}g
+                        </div>
+                    `;
+                contenedor.appendChild(card);
+            });
+        } catch (error) {
+            console.error("Error cargando datos:", error);
+            document.getElementById('loader').innerText = "Error al cargar los datos.";
+        }
+    }
+
+    obtenerAlimentos();
+</script>
+</body>
+</html>
